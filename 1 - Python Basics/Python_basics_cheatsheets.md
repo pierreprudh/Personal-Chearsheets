@@ -502,10 +502,103 @@ range(0, 10, 2) # step = 2, 5 steps
 ---
 
 # **4. Functions**
+
+Functions allow you to **reuse code**, **structure logic**, and **make programs readable**.
+
 ## 4.1 Function definition & return values  
+
+### Basic Function
+
+```python
+def add(a, b):
+    return a + b
+
+result = add(3, 5)
+```  
+
+**Default argument**
+```python 
+def power(x, exp=2): return x ** exp
+
+power(3)      # 9
+power(3, 3)   # 27
+```
+
+### Returning Multiple Values
+```python
+def stats(values):
+    return min(values), max(values), sum(values) / len(values)
+
+low, high, mean = stats([1, 2, 3, 4])
+```  
+
 ## 4.2 `*args` and `**kwargs`  
+
+Used to handle variable numbers of arguments.
+
+### `args` (positional arguments)
+
+```python
+def add_all(*args):
+    return sum(args)
+
+add_all(1, 2, 3, 4)  # 10
+```  
+
+### `kwargs` (keyword arguments)
+
+```python
+def print_info(**kwargs):
+    for key, value in kwargs.items():
+        print(key, value)
+
+print_info(name="Alice", age=30)
+``` 
+
 ## 4.3 Lambda functions  
+
+One-line function with no declaration
+
+```python
+square = lambda x: x ** 2
+square(5)
+``` 
+
+Can be used in **list**
+
+```python
+list(map(lambda x: x * 2, [1, 2, 3]))
+```
+
 ## 4.4 Built-ins: `map`, `filter`, `reduce`  
+
+### ``map``
+```python
+nums = [1, 2, 3]
+mapped = list(map(lambda x: x + 1, nums))
+```
+
+
+### ``filter``
+```python
+filtered = list(filter(lambda x: x % 2 == 0, nums))
+```
+
+### ``reduce``
+```python
+total = reduce(lambda x, y: x + y, nums)
+```
+
+
+#### Pratical example -> Feature Transformation
+
+> Normalize values in one column
+
+```python
+values = [10, 20, 30]
+
+normalized = list(map(lambda x: x / max(values), values))
+```
 
 ---
 
