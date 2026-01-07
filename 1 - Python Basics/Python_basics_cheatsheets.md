@@ -603,48 +603,471 @@ normalized = list(map(lambda x: x / max(values), values))
 ---
 
 # **5. Error Handling**
+
+Error handling allows your program to **fail** while avoid crashes, and handle unexpected cases.
+This is especially important when working with **real-world data**.
+
 ## 5.1 Try / Except  
+
+### Basic structure:
+
+```python
+try:
+    x = int("10")
+except ValueError:
+    print("Conversion failed")
+```
+>If no error, ``except`` is skipped.
+
+### Catching Multiple Exceptions
+
+```python
+try:
+    value = 10 / x
+except (ZeroDivisionError, TypeError):
+    print("Invalid operation")
+```
+
+### Else & Finally
+#### ``else`` (runs if no exception)
+```python
+try:
+    x = int("5")
+except ValueError:
+    print("Error")
+else:
+    print("Success")
+```
+
+#### ``finally`` (always runs)
+```python
+try:
+    f = open("file.txt")
+except FileNotFoundError:
+    print("File missing")
+finally:
+    f.close()
+```
+
 ## 5.2 Common exceptions  
+
+| Exception           | When it occurs     |
+| ------------------- | ------------------ |
+| `ValueError`        | Invalid value      |
+| `TypeError`         | Wrong type         |
+| `KeyError`          | Missing dict key   |
+| `IndexError`        | Index out of range |
+| `ZeroDivisionError` | Division by zero   |
+| `FileNotFoundError` | Missing file       |
+
 ## 5.3 Raising errors  
+
+Use ``raise`` to trigger your own exceptions and avoid crashes.
+
+```python
+def withdraw(balance, amount):
+    if amount > balance:
+        raise ValueError("Insufficient balance")
+    return balance - amount
+```
+
+## 5.4 Creating Custom Exceptions
+
+```python
+class DataValidationError(Exception):
+    pass
+
+def validate_age(age):
+    if age < 0:
+        raise DataValidationError("Age must be positive")
+```
 
 ---
 
 # **6. Modules & Imports**
+
+
+A module is a Python file (`.py`), and a package is a collection of modules.
+
 ## 6.1 Importing modules  
+
+### Import the whole module
+
+```python
+import math
+
+math.sqrt(16)
+math.pi
+```
+
+### Import specific objects
+
+```python
+from math import sqrt, pi
+
+sqrt(16)
+```
+
+### Import with alias 
+
+```python
+import numpy as np
+
+np.array([1, 2, 3])
+```
+
 ## 6.2 Creating your own module  
-## 6.3 Useful standard libraries  
+
+**Create** a file ``utils.py`` :
+
+```python
+# utils.py
+def mean(values):
+    return sum(values) / len(values)
+```
+
+Use it in another file:
+
+```python
+# main.py
+from utils import mean
+
+mean([1, 2, 3])
+```
 
 ---
 
 # **7. Classes & Object-Oriented Basics**
-## 7.1 Class definition  
-## 7.2 Attributes & methods  
+
+Classes let you **bundle data and behavior** into a single reusable blueprint.  
+You use them to define your own types, which is very common in ML models, pipelines, and APIs.
+
+## 7.1 Class definition
+
+A class defines a new type, and `__init__` is the constructor called when you create an instance.
+
+```python
+class Model:
+    def __init__(self, name):
+        self.name = name  # attribute stored on the instance
+
+# create an object (instance)
+model = Model("MyModel")
+print(model.name)  # -> MyModel
+```
+
+
+## 7.2 Attributes & methods
+**Attributes** : variables that belong to an object (``self.name``).
+
+**Methods** : functions defined inside a class that operate on that object (``train``).
+
+```python
+class Model:
+    def __init__(self, name):
+        self.name = name          # attribute
+
+    def train(self, X):           # method
+        print(f"Training {self.name} on {len(X)} samples")
+
+model = Model("MyModel")
+model.train()[1]
+```
+
 ## 7.3 Inheritance  
+
+Inheritance lets a class reuse and extend the behavior of another class.
+
+```python
+class Model:
+    def __init__(self, name):
+        self.name = name
+
+    def train(self, X):
+        print(f"Training {self.name} on {len(X)} samples")
+
+
+# LinearModel "is a" Model and inherits its attributes and methods
+class LinearModel(Model):
+    pass
+
+
+lm = LinearModel("LinearReg")
+lm.train()  # uses Model.train[1]
+```
+
+You can also override methods in the child class :
+```python
+class LinearModel(Model):
+    def train(self, X):
+        print(f"Fitting linear weights for {self.name} on {len(X)} samples")
+```
+
 ## 7.4 Magic methods (`__str__`, `__len__`, etc.)  
+
+```python
+class Dataset:
+    def __init__(self, data):
+        self.data = data
+
+    def __len__(self):
+        return len(self.data)
+
+    def __str__(self):
+        return f"Dataset(size={len(self)})"
+```
+
+#### Example 
+```python
+model = Model("Linear Regression")
+model.train(X=None)
+```
 
 ---
 
 # **8. File Handling**
+
+Python provides simple and safe tools to work with files.
+
 ## 8.1 Reading files  
+
+### Reading a text file
+
+```python
+with open("data.txt", "r") as f:
+    content = f.read()
+``` 
+
+> Read line by line 
+
+```python
+with open("data.txt") as f:
+    for line in f:
+        print(line.strip())
+``` 
+
 ## 8.2 Writing files  
+
+### ``Write`` (overwrite) :
+
+```python
+with open("output.txt", "w") as f:
+    f.write("Hello world")
+``` 
+
+### ``Append`` :
+
+```python
+with open("output.txt", "a") as f:
+    f.write("\nNew line")
+``` 
+
 ## 8.3 Working with JSON  
+
+You can use the ``json`` library 
+
+### Reading JSON
+
+```python
+import json
+
+with open("data.json") as f:
+    data = json.load(f)
+``` 
+
+### Writing JSON
+
+```python
+with open("data.json", "w") as f:
+    json.dump(data, f, indent=2)
+``` 
+
+## 8.4 Using ``pathlib`` library
+
+Using ``pathlib`` library can prevent from errors when you move documents if they are hard-coded and not in cloud storage. 
+
+```python
+from pathlib import Path
+
+path = Path("data") / "file.txt"
+
+if path.exists():
+    text = path.read_text()
+``` 
+
+Write : 
+
+```python
+
+path.write_text("content")
+``` 
 
 ---
 
 # **9. Useful Python Features**
+
+This section covers Python features that greatly improve **code readability, efficiency, and safety**.
+
 ## 9.1 List / Dict / Set comprehensions  
+
+### List Comprehension
+
+```python
+squares = [x**2 for x in range(5)]
+```
+
+With condition:
+
+```python
+positives = [x for x in values if x > 0]
+```
+
+### Dictionary Comprehension
+
+```python
+counts = {x: values.count(x) for x in set(values)}
+```
+
+### Set Comprehension
+
+```python
+unique_lengths = {len(x) for x in words}
+```
+
+
 ## 9.2 Decorators (intro)  
+
+Decorators modify function behavior (see ``example.ipynb``)
+
+```python
+def log_call(func):
+    def wrapper(*args, **kwargs):
+        print("Function called")
+        return func(*args, **kwargs)
+    return wrapper
+
+@log_call
+def add(a, b):
+    return a + b
+```
+
 ## 9.3 Context managers (`with`)  
-## 9.4 Generators & `yield`  
+
+Automatically handle setup and cleanup
+
+```python
+with open("file.txt") as f:
+    data = f.read()
+```
+
+Custom context manager :
+
+```python
+from contextlib import contextmanager
+
+@contextmanager
+def timer():
+    import time
+    start = time.time()
+    yield
+    print(time.time() - start)
+```
 
 ---
 
 # **10. Numpy Essentials**
+
+NumPy is the **foundation library of numerical computing** in Python.
+It provides fast, vectorized operations and is heavily used.
+
 ## 10.1 Creating arrays  
+
+```python
+import numpy as np
+From a list:
+```
+
+```python
+a = np.array([1, 2, 3])
+```
+
+```python
+np.zeros(3)
+np.ones((2, 3))
+np.arange(0, 10, 2)
+np.linspace(0, 1, 5)
+```
+
 ## 10.2 Array operations  
+
+```python
+a.shape  # (3,)
+a.ndim   # 1
+a.size   # 3
+a.dtype  # dtype('int64')
+```
+
 ## 10.3 Slicing & indexing  
-## 10.4 Broadcasting  
-## 10.5 Random utilities  
+
+```python
+a = np.array([10, 20, 30, 40])
+
+a[0]   # 10 
+a[-1]  # 40
+a[1:3] # [20, 30, 40]
+```
+
+## 10.4 Vectorized Operations
+
+Operations apply element-wise without loops
+
+```python
+a = np.array([1, 2, 3])
+
+a + 10
+a * 2
+a ** 2
+```
+
+## 10.5 Broadcasting  
+
+Automatically expands shapes when possible
+
+```python
+x = np.array([1, 2, 3])
+y = 10
+
+x + y
+```
+
+## 10.6 Aggregations
+
+```python
+a.sum()
+a.mean()
+a.min()
+a.max()
+```
+
+
+Axis based when working with vectors
+```python
+m.sum(axis=0)
+m.mean(axis=1)
+```
+
+## 10.6 Random utilities  
+
+```python
+np.random.rand(3)
+np.random.randn(2, 2)
+np.random.randint(0, 10, size=5)
+```
+
+Set seed to assure reproductibility (ML model training) :
+```python
+np.random.seed(42)  # 42 = openai generated 99% of the time 
+```
 
 ---
 
