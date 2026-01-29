@@ -920,15 +920,163 @@ Example :
 ---
 
 # **6. Statistical Inference**
-## 6.1 Estimation
-- Point estimates
-- Bias vs variance
-- Maximum Likelihood Estimation (MLE)
 
-## 6.2 Confidence Intervals
-- Interpretation (what they *really* mean)
-- Confidence level
-- CI for mean & proportion
+
+Statistical inference is about **using data (samples) to learn about unknown population parameters**
+It answers questions like :
+- How uncertain is our estimate ?
+- How reliable are our conclusions ?
+
+
+## 6.1 Estimation
+
+Estimation aims to infer unknown parameters of a population distribution
+
+Let :
+- \(\theta\) be an unknown population parameter
+- \(\hat{\theta}\) be an estimator computed from data
+
+### 6.1.1 Point Estimation
+
+A **point estimate** provides a single value for a parameter
+
+Example :
+- Sample mean \(\bar{X}\) estimates population mean \(\mu\)
+- Sample variance \(s^2\) estimates population variance \(\sigma^2\)
+
+\[
+\hat{\mu} = \bar{X} = \frac{1}{n}\sum_{i=1}^{n} x_i
+\]
+
+
+### Properties of a Good Estimator
+
+#### Unbiasedness
+\[
+\mathbb{E}[\hat{\theta}] = \theta
+\]
+
+#### Consistency
+\[
+\hat{\theta} \xrightarrow{p} \theta \quad \text{as } n \to \infty
+\]
+
+#### Efficiency
+Low variance among all unbiased estimators
+
+
+## 6.2 Bias–Variance Tradeoff (Estimator View)
+
+The mean squared error (MSE) of an estimator decomposes as :
+
+\[
+\text{MSE}(\hat{\theta}) =
+\mathbb{E}[(\hat{\theta} - \theta)^2]
+= \text{Bias}^2 + \text{Variance}
+\]
+
+This is the **statistical origin** of the ML bias–variance tradeoff
+
+
+## 6.3 Maximum Likelihood Estimation (MLE)
+
+MLE is one of the most important estimation methods in statistics and ML.
+
+
+### Likelihood Function
+
+Given data \(X = \{x_1, \dots, x_n\}\) and parameter \(\theta\) :
+
+\[
+\mathcal{L}(\theta \mid X) = \prod_{i=1}^{n} p(x_i \mid \theta)
+\]
+
+MLE chooses :
+\[
+\hat{\theta}_{\text{MLE}} = \arg\max_\theta \mathcal{L}(\theta \mid X)
+\]
+
+### Log-Likelihood (Practice case)
+
+\[
+\ell(\theta) = \sum_{i=1}^{n} \log p(x_i \mid \theta)
+\]
+
+Why log-likelihood ?
+- Numerical stabilityV
+- Converts products to sums with log
+- Easier optimization
+
+
+### Example: Normal Distribution
+
+If :
+\[
+X_i \sim \mathcal{N}(\mu, \sigma^2)
+\]
+
+Then MLE gives :
+\[
+\hat{\mu} = \bar{X} = \frac{1}{n}\sum_{i=1}^{n}x_i
+\quad\text{and}\quad
+\hat{\sigma}^2 = \frac{1}{n}\sum_{i=1}^{n}(x_i - \bar{X})^2
+\]
+
+
+### ML Connection
+
+- Linear regression = MLE under Gaussian noise
+- Logistic regression = MLE under Bernoulli likelihood
+- Neural networks optimize log-likelihood (or equivalent loss)
+
+
+## 6.4 Confidence Intervals
+
+A confidence interval quantifies **uncertainty around an estimate**
+
+### Confidence Interval for the Mean (Known \(\sigma\))
+
+\[
+\bar{X} \pm z_{\alpha/2}\frac{\sigma}{\sqrt{n}}
+\]
+
+Where :
+- \(z_{\alpha/2}\) is a standard normal quantile
+- confidence level = \(1 - \alpha\)
+
+
+### Confidence Interval (Unknown \(\sigma\))
+
+Use Student’s t-distribution :
+
+\[
+\bar{X} \pm t_{\alpha/2,\,n-1}\frac{s}{\sqrt{n}}
+\]
+
+### Interpretation (Very Important)
+
+A 95% CI means :
+> If we repeated the experiment many times, **95% of the intervals would contain the true parameter**.
+
+*It does NOT mean there is a 95% probability that the parameter lies in a fixed interval.*
+
+## 6.5 Confidence Intervals in Data Science
+
+Used to :
+- compare models
+- quantify metric uncertainty
+
+Example :
+- Accuracy = 0.82 ± 0.03
+
+## 6.6 Inference vs Prediction
+
+| Aspect | Inference | Prediction |
+|----|----------|------------|
+| Goal | Understand parameters | Predict outcomes |
+| Focus | Uncertainty | Accuracy |
+| Output | CI, p-values | Point estimates |
+| Statistics | Central | Supportive |
 
 ---
 
