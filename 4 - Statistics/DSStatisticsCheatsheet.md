@@ -1081,22 +1081,177 @@ Example :
 ---
 
 # **7. Hypothesis Testing**
+
+Hypothesis testing provides a **formal framework for making decisions under uncertainty**
+It answers questions like :
+- Is this effect real or due to randomness ?
+- Is model A truly better than model B ?
+- Is this difference statistically significant ?
+
+
 ## 7.1 Hypothesis Testing Framework
-- Null vs Alternative hypothesis
-- Test statistics
-- p-values
-- Significance level (α)
 
-## 7.2 Common Statistical Tests
-- Z-test
-- Student’s t-test
-- Chi-square test
-- ANOVA
+A hypothesis test consists of :
 
-## 7.3 Common Mistakes
-- p-value misinterpretation
+1. A **null hypothesis** \(H_0\)
+2. An **alternative hypothesis** \(H_1\)
+3. A **test statistic**
+4. A **decision rule**
+
+### Null Hypothesis \(H_0\)
+
+Represents the **default assumption**
+
+Examples :
+- No difference between two models
+- Mean equals a reference value
+- Feature has no effect
+
+\[
+H_0: \theta = \theta_0
+\]
+
+
+### Alternative Hypothesis \(H_1\)
+
+Represents what we want to test for
+
+\[
+H_1: \theta \neq \theta_0
+\quad \text{(two-sided)}
+\]
+
+or
+
+\[
+H_1: \theta > \theta_0 \quad \text{or} \quad \theta < \theta_0
+\quad \text{(one-sided)}
+\]
+
+
+## 7.2 Test Statistic
+
+A test statistic summarizes the evidence in the data
+
+General form :
+\[
+T = \frac{\text{estimate} - \text{hypothesized value}}{\text{standard error}}
+\]
+
+Large values of \(|T|\) indicate evidence against \(H_0\).
+
+
+## 7.3 p-value
+
+The **p-value** is the probability of observing a result **at least as extreme** as the one obtained, assuming \(H_0\) is true
+
+\[
+p = P(|T| \ge |t_{\text{obs}}| \mid H_0)
+\]
+
+
+### Decision Rule
+
+Choose a significance level \(\alpha\) (commonly 0.05) :
+
+- If \(p \le \alpha\) => reject \(H_0\)
+- If \(p > \alpha\) => fail to reject \(H_0\)
+
+
+## 7.4 Type I and Type II Errors
+
+| Error Type | Meaning |
+|---------|--------|
+| Type I | Rejecting a true \(H_0\) (false positive) |
+| Type II | Failing to reject a false \(H_0\) (false negative) |
+
+
+### Significance Level
+
+\[
+\alpha = P(\text{Type I error})
+\]
+
+Lower \(\alpha\) => fewer false positives, more false negatives
+
+
+## 7.5 Common Statistical Tests
+
+
+### 7.5.1 Z-test
+
+Used when :
+- population variance is known
+- sample size is large
+
+\[
+Z = \frac{\bar{X} - \mu_0}{\sigma / \sqrt{n}}
+\]
+
+
+### 7.5.2 Student’s t-test
+
+Used when :
+- population variance is unknown
+- sample size is small or moderate
+
+\[
+T = \frac{\bar{X} - \mu_0}{s / \sqrt{n}}
+\]
+
+Variants :
+- one-sample t-test
+- two-sample t-test
+- paired t-test
+
+### 7.5.3 Chi-Square Test
+
+Used for **categorical data**
+
+\[
+\chi^2 = \sum \frac{(O - E)^2}{E}
+\]
+
+Application :
+- independence testing
+
+## 7.6 Hypothesis Testing in Machine Learning
+
+Used to :
+- compare model performances
+- validate A/B tests
+- assess feature impact
+
+Example :
+- Is model B significantly better than model A ?
+
+---
+
+## 7.7 Statistical vs Practical Significance
+
+A result can be :
+- statistically significant
+- practically meaningless
+
+Example :
+- Accuracy improves by 0.1% with p < 0.001
+
+Always ask :
+> Does this difference matter in practice ?
+
+
+## 7.8 Common Pitfalls 
+
 - p-hacking
-- Statistical vs practical significance
+- multiple testing without correction
+- blind reliance on p-values
+- ignoring assumptions
+
+## 7.9 When NOT to Use Hypothesis Testing
+
+- very large datasets (everything becomes significant)
+- purely predictive tasks
+- exploratory analysis without hypotheses
 
 ---
 
