@@ -1256,20 +1256,136 @@ Always ask :
 ---
 
 # **8. Correlation & Dependence**
-## 8.1 Correlation Measures
-- Pearson
-- Spearman
-- Kendall
 
-## 8.2 Correlation vs Causation
-- Confounders
-- Simpson’s paradox
-- Spurious correlations
 
-## 8.3 Visualization + Correlation
-- Heatmaps
-- Pairplots
-- Joint plots
+Correlation measures the **strength and direction of association** between variables
+It is widely used in :
+- EDA
+- feature selection
+
+Correlation does **not** imply causation
+
+# 8.1 What Is Correlation ?
+
+Correlation quantifies how two random variables move together
+
+Let \(X\) and \(Y\) be random variables
+
+General idea :
+- Positive correlation => move in same direction
+- Negative correlation => move in opposite directions
+- Zero correlation => no linear relationship
+
+## 8.2 Pearson Correlation
+
+Measures **linear correlation**
+
+\[
+\rho_{X,Y} =
+\frac{\mathrm{Cov}(X,Y)}{\sigma_X \sigma_Y}
+\]
+
+Sample estimate :
+
+\[
+r =
+\frac{\sum (x_i - \bar{x})(y_i - \bar{y})}
+{\sqrt{\sum (x_i - \bar{x})^2 \sum (y_i - \bar{y})^2}}
+\]
+
+Properties :
+- \(r \in [-1, 1]\)
+- Sensitive to outliers
+- Only captures linear relationships
+
+**When to Use Pearson**
+
+- Numerical variables
+- Approximately linear relationship
+- No extreme outliers
+
+## 8.3 Spearman Rank Correlation
+
+Measures **monotonic relationships** using ranks
+
+\[
+\rho_s = \rho(\text{rank}(X), \text{rank}(Y))
+\]
+
+Properties :
+- Captures non-linear monotonic relationships
+- Robust to outliers
+- Based on ordering, not values
+
+**When to Use Spearman**
+
+- Non-linear but monotonic relationships
+- Ordinal data
+- Presence of outliers
+
+
+## 8.4 Kendall’s Tau
+
+Measures **ordinal association** based on concordant and discordant pairs
+
+\[
+\tau = \frac{C - D}{C + D}
+\]
+
+Where :
+- \(C\) = number of concordant pairs
+- \(D\) = number of discordant pairs
+
+Properties :
+- More robust for small samples
+- Strong theoretical grounding
+
+
+## 8.5 Simpson’s Paradox
+
+A trend appears in aggregated data but **reverses when conditioned** on a third variable
+
+Key lesson :
+> Always analyze correlations **by subgroup**
+
+
+## 8.6 Visualizing Correlation
+
+### Scatter Plots
+
+Reveal :
+- linearity
+- non-linearity
+- outliers
+
+
+### Correlation Heatmaps
+
+```python
+df.corr()
+``` 
+
+Used to :
+- detect redundancy
+- identify multicollinearity
+- guide dimensionality reduction
+
+### 8.7 Correlation in Machine Learning
+
+Correlation helps :
+- detect redundant features
+- improve interpretability
+- stabilize linear models
+
+But :
+- trees and neural networks handle correlation better
+- correlation does not imply predictive importance
+
+### 8.8 When Correlation Fails
+- Non-linear relationships
+- Heteroscedastic data
+- Multimodal distributions
+- Causal inference
 
 ---
 
