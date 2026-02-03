@@ -1390,20 +1390,162 @@ But :
 ---
 
 # **9. Regression from a Statistical Perspective**
+
+Regression models describe the relationship between a **response variable** and one or more **explanatory variables**
+In statistics, regression focuses on **estimation, interpretation, and assumptions**
+
 ## 9.1 Simple Linear Regression
-- Statistical assumptions
-- Error terms
-- Residual analysis
 
-## 9.2 Multiple Linear Regression
-- Multicollinearity
-- Interpretation of coefficients
-- R² vs adjusted R²
+Models the relationship between one predictor \(X\) and a response \(Y\) :
 
-## 9.3 Regularization (Statistical View)
-- Ridge
-- Lasso
-- Bias–variance tradeoff
+\[
+Y = \beta_0 + \beta_1 X + \varepsilon
+\]
+
+Where :
+- \(\beta_0\) = intercept
+- \(\beta_1\) = slope
+- \(\varepsilon\) = random error term
+
+
+**Interpretation**
+
+- \(\beta_1\) : expected change in \(Y\) for a one-unit increase in \(X\)
+- \(\beta_0\) : expected value of \(Y\) when \(X = 0\)
+
+### Estimation (Ordinary Least Squares)
+
+OLS minimizes the sum of squared residuals :
+
+\[
+\min_{\beta_0, \beta_1} \sum_{i=1}^{n} (y_i - \hat{y}_i)^2
+\]
+
+Closed-form solution :
+
+\[
+\hat{\beta} = (X^\top X)^{-1} X^\top y
+\]
+
+## 9.2 Statistical Assumptions of Linear Regression
+
+Linear regression relies on strong assumptions
+
+
+**1. Linearity**
+The relationship between \(X\) and \(Y\) is linear
+
+
+**2. Independence**
+Observations are independent
+
+
+**3. Homoscedasticity**
+Constant variance of errors :
+
+\[
+\mathrm{Var}(\varepsilon_i) = \sigma^2
+\]
+
+**4. Normality of Errors**
+Errors are normally distributed :
+
+\[
+\varepsilon \sim \mathcal{N}(0, \sigma^2)
+\]
+
+
+### Why These Assumptions Matter
+
+Violations affect :
+- coefficient validity
+- confidence intervals
+- hypothesis tests
+
+## 9.3 Residual Analysis
+
+Residuals :
+\[
+e_i = y_i - \hat{y}_i
+\]
+
+Used to :
+- diagnose assumption violations
+- detect outliers
+- assess model adequacy
+
+### Common Residual Plots
+
+- residuals *vs* fitted values
+- QQ-plot
+- residual histogram
+
+## 9.4 Multiple Linear Regression
+
+Extends linear regression to multiple predictors
+
+\[
+Y = \beta_0 + \beta_1 X_1 + \dots + \beta_p X_p + \varepsilon
+\]
+
+
+### Interpretation of Coefficients
+
+\(\beta_j\) represents the effect of \(X_j\) **holding all other variables constant**
+
+## 9.5 Multicollinearity
+
+Occurs when predictors are strongly correlated
+
+Effects :
+- unstable coefficient estimates
+- inflated standard errors
+- unreliable interpretation
+
+Detection :
+- correlation matrix
+- Variance Inflation Factor (VIF)
+
+
+## 9.6 Model Evaluation Metrics
+
+### Coefficient of Determination \(R^2\)
+
+\[
+R^2 = 1 - \frac{\sum (y_i - \hat{y}_i)^2}
+{\sum (y_i - \bar{y})^2}
+\]
+
+Measures proportion of variance explained (0.8 => 80% of variance is explained by this model)
+With : \(R^2 \in [0;1]\) 
+
+**Adjusted \(R^2\)**
+>Penalizes unnecessary predictors
+
+## 9.7 Regularization (Statistical View)
+
+Regularization adds a penalty term to reduce variance
+
+### Ridge Regression (L2)
+
+\[
+\min \sum (y_i - \hat{y}_i)^2 + \lambda \sum \beta_j^2
+\]
+
+
+### Lasso Regression (L1)
+
+\[
+\min \sum (y_i - \hat{y}_i)^2 + \lambda \sum |\beta_j|
+\]
+
+### ML Intuition
+
+| Method | Effect |
+|----|-------|
+| Ridge | Shrinks coefficients |
+| Lasso | Feature selection |
+| OLS | Low bias, high variance |
 
 ---
 
